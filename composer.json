@@ -1,0 +1,17 @@
+{
+    "name": "oscar/test_api",
+    "autoload": {
+        "psr-4": {
+            "Oscar\\TestApi\\": "atika/src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "maiga28",
+            "email": "sidimaiga.work@gmail.com"
+        }
+    ],
+    "require": {
+        "zircote/swagger-php": "^4.8"
+    }
+}
