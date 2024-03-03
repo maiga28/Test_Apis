@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "zircote/swagger-php": "^4.8"
+        "zircote/swagger-php": "^4.8",
+        "nikic/fast-route": "^1.3"
     }
 }
