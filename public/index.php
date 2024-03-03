@@ -2,33 +2,24 @@
 
 declare(strict_types=1);
 
-// Inclure le fichier autoload.php de Composer
-require_once __DIR__ . '/../vendor/autoload.php';
-// En-têtes
-define('ACCESS_CONTROL_ALLOW_ORIGIN', 'Access-Control-Allow-Origin');
-define('CONTENT_TYPE', 'Content-Type');
-define('ACCESS_CONTROL_ALLOW_METHOD', 'Access-Control-Allow-Method');
-define('ACCESS_CONTROL_ALLOW_HEADERS', 'Access-Control-Allow-Headers');
-define('BASE_PATH', '/test_api/Public');
-define('NOT_FOUND_MESSAGE', 'Route not found');
-
 use Oscar\TestApi\Databases\Database;
-use Oscar\TestApi\ErrorHandler\ErrorHandler;
 use Oscar\TestApi\Main_Apis\ProductGateway\ProductGateway;
 use Oscar\TestApi\Controllers\ProductsControllers\ProductController;
 
-// Configuration des en-têtes
-header(ACCESS_CONTROL_ALLOW_ORIGIN . ': *');
-header(CONTENT_TYPE . ': application/json');
-header(ACCESS_CONTROL_ALLOW_METHOD . ': GET');
-header(ACCESS_CONTROL_ALLOW_HEADERS . ': Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+// Inclure le fichier autoload.php de Composer
+require_once __DIR__ . '/../vendor/autoload.php';
 
-/**
- * Fonction pour valider et traiter l'URI de la requête.
- *
- * @param string $requestUri L'URI de la requête.
- * @return array Tableau contenant la route et l'ID extraits de l'URI.
- */
+// En-têtes CORS
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+// Constantes
+define('BASE_PATH', '/test_api/Public');
+define('NOT_FOUND_MESSAGE', 'Route not found');
+
+// Fonction pour valider et traiter l'URI de la requête.
 function processRequestUri(string $requestUri): array {
     // Suppression du chemin de base de l'URI s'il est présent
     $basePath = '/test_api';
@@ -50,16 +41,9 @@ $requestUri = $_SERVER["REQUEST_URI"] ?? '';
 $requestData = processRequestUri($requestUri);
 $route = $requestData['route'];
 
-// Vérification de la route
-if ($route !== 'product') {
-    // Gestion de la route incorrecte
-    http_response_code(404);
-    echo json_encode(["message" => NOT_FOUND_MESSAGE]);
-    return;
-}
-
 // Initialisation de la base de données
 $database = new Database("localhost", "product_db", "root", "<@>maiga<@>");
+
 // Initialisation de la passerelle des produits
 $gateway = new ProductGateway($database);
 // Initialisation du contrôleur des produits
